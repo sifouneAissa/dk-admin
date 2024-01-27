@@ -1,3 +1,33 @@
+/* Google Font: Source Sans Pro */
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback');
+
+/* Font Awesome */
+@import '../../public/adminlte/plugins/fontawesome-free/css/all.min.css';
+
+/* Ionicons */
+@import url('https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css');
+
+/* Tempusdominus Bootstrap 4 */
+@import '../../public/adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css';
+
+/* iCheck */
+@import '../../public/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css';
+
+/* JQVMap */
+@import '../../public/adminlte/plugins/jqvmap/jqvmap.min.css';
+
+/* Theme style */
+@import '../../public/adminlte/dist/css/adminlte.min.css';
+
+/* overlayScrollbars */
+@import '../../public/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css';
+
+/* Daterange picker */
+@import '../../public/adminlte/plugins/daterangepicker/daterangepicker.css';
+
+/* Summernote */
+@import '../../public/adminlte/plugins/summernote/summernote-bs4.min.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,3 +35,4 @@
 [x-cloak] {
     display: none;
 }
+

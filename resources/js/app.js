@@ -1,6 +1,10 @@
 import './bootstrap';
 import '../css/app.css';
 
+import "../../public/adminlte/plugins/jquery/jquery.min.js";
+import "../../public/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js";
+import "../../public/adminlte/dist/js/adminlte.min.js";
+
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
