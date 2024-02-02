@@ -9,7 +9,7 @@
         'verified',
     ])->group(function () {
         \Illuminate\Support\Facades\Route::get('/dashboard', function () {
-            return \Inertia\Inertia::render('Dashboard');
+            return \Inertia\Inertia::render('Welcome');
         })->name('dashboard');
 
 
