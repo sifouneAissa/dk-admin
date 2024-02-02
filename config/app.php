@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
 return [
-
+    'admin-prefix' => 'admin',
+    'client-prefix' => '',
     /*
     |--------------------------------------------------------------------------
     | Application Name
