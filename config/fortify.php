@@ -4,6 +4,7 @@ use Laravel\Fortify\Features;
 
 return [
 
+
     /*
     |--------------------------------------------------------------------------
     | Fortify Guard
@@ -74,6 +75,9 @@ return [
     */
 
     'home' => '/dashboard',
+    'home_admin' => config('app.admin-prefix').'/dashboard',
+    'login' => '/login',
+    'login_admin' => config('app.admin-prefix').'/login',
 
     /*
     |--------------------------------------------------------------------------

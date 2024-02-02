@@ -11,6 +11,7 @@
     const form = useForm({
         email: '',
         password: '',
+        is_admin: false,
         remember: false,
     });
 
@@ -50,6 +51,7 @@
                 Dashboard
             </h2>
         </template>
+
         <section class="login-wrapper login-wrapper-page">
             <div class="container">
 

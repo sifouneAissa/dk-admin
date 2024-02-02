@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
 return [
-    'admin-prefix' => 'admin',
+    'admin-prefix' => 'admin-dash',
     'client-prefix' => '',
     /*
     |--------------------------------------------------------------------------

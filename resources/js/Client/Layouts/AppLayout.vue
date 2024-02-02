@@ -3,6 +3,7 @@
     import {Head, Link, router} from '@inertiajs/vue3';
     import Navbar from '@/Client/Partials/Navbar.vue';
     import Footer from '@/Client/Partials/Footer.vue';
+    import MainHeader from '@/Client/Partials/MainHeader.vue';
     import HeaderSlider from '@/Client/Partials/HeaderSlider.vue';
     import {onMounted} from 'vue';
 
@@ -20,7 +21,6 @@
             default : true
         }
     });
-
 
     const logout = () => {
         router.post(route('logout'));

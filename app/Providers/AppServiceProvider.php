@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Inertia::share('template' , function (){
-            return request()->route()->getPrefix() === '/'.config('app.admin-prefix') ? 'app' : 'app-client';
+            return adminRequest() ? 'app' : 'app-client';
         });
     }
 }
