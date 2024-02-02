@@ -10,9 +10,9 @@ use Inertia\Inertia;
         config('jetstream.auth_session'),
         'verified',
     ])->group(function () {
-        \Illuminate\Support\Facades\Route::get('/dashboard', function () {
-            return Inertia::render('Dashboard');
-        })->name('dashboard');
+
+        \Illuminate\Support\Facades\Route::get('/dashboard',[\App\Http\Controllers\Admin\DashboardController::class,'index'])->name('dashboard');
+
     });
 
     require __DIR__. '/admin-auth.php';

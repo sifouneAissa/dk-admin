@@ -49,7 +49,7 @@ const isAuthenticated =  ref(page.props.auth.user !== null);
             <!-- Page Content -->
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
-                <Breadcrumb />
+                <Breadcrumb :breadcrumb="[]" />
 
                 <!-- Main content -->
                 <div class="content">

@@ -40,3 +40,24 @@ if (!function_exists('getPrefix')) {
         return null;
     }
 }
+
+
+
+if (!function_exists('buildBreadCrumb')) {
+
+    function buildBreadCrumb($header,$activeHeader = null,$forAdmin = true)
+    {
+        return [
+            'breadcrumb' => [
+                'header' => [
+                    'title' => $header['title'],
+                    'link' => $header['link']
+                ],
+                'active_header' => $activeHeader ?  [
+                    'title' => $activeHeader['title'],
+                    'link' => $activeHeader['link']
+                ] : null
+            ]
+         ];
+    }
+}
