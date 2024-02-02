@@ -625,7 +625,7 @@
 
                                 <div class="cart-block cart-block-item clearfix">
                                     <div class="image">
-                                        <a href="product.html"><img src="/dist/assets/images/product-4.png" alt="" /></a>
+                                        <a href="product.html"><img src="dist/assets/images/product-4.png" alt="" /></a>
                                     </div>
                                     <div class="title">
                                         <div><a href="product.html">Green corner</a></div>

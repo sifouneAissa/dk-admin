@@ -26,13 +26,689 @@
         router.post(route('logout'));
     };
 
+
     onMounted(() => {
-        const path = '/dist/js/main.js';
-        let mainScript = document.createElement('script');
-        mainScript.setAttribute('src',path);
-        mainScript.setAttribute('id',"mainScript");
-        if(document.querySelector(`script[id=mainScript]`) === null )
-        document.head.appendChild(mainScript)
+
+        var objSearch = $('.search-wrapper'),
+            objLogin = $('.login-wrapper'),
+            objCart = $('.cart-wrapper'),
+            objMenu = $('.floating-menu'),
+            objMenuLink = $('.floating-menu a'),
+            $search = $('.open-search'),
+            $login = $('.open-login'),
+            $cart = $('.open-cart'),
+            $menu = $('.open-menu'),
+            $openDropdown = $('.open-dropdown'),
+            $settingsItem = $('.nav-settings .nav-settings-list li'),
+            $close = $('.close-menu');
+
+        // Open/close login
+
+        $login.on('click', function () {
+            toggleOpen($(this));
+            objLogin.toggleClass('open');
+            closeSearch();
+            closeCart();
+        });
+
+        // Open/close search bar
+
+        $search.on('click', function () {
+            toggleOpen($(this));
+            objSearch.toggleClass('open');
+            objSearch.find('input').focus();
+            closeLogin();
+            closeCart();
+        });
+
+        // Open/close cart
+
+        $cart.on('click', function () {
+            toggleOpen($(this));
+            objCart.toggleClass('open');
+            closeLogin();
+            closeSearch();
+        });
+
+        // Mobile menu open/close
+
+        $menu.on('click', function () {
+            objMenu.addClass('expanded');
+            closeSearch();
+            closeLogin();
+            closeCart();
+        });
+
+        // Settings language & currency dropdown
+
+        $settingsItem.on('click', function () {
+            var $value = $(this).closest('.nav-settings').find('.nav-settings-value');
+            $value.text($(this).text());
+        });
+
+        // Floating menu hyperlink
+        if ($('nav').hasClass('navbar-single-page')) {
+            objMenuLink.on('click', function () {
+                objMenu.removeClass('expanded');
+            });
+        }
+
+        // Open dropdown/megamenu
+
+        $openDropdown.on('click', function (e) {
+
+            e.preventDefault();
+
+            var liParent = $(this).parent().parent(),
+                liDropdown = liParent.find('.navbar-dropdown');
+
+            liParent.toggleClass('expanded');
+
+            if (liParent.hasClass('expanded')) {
+                liDropdown.slideDown();
+            }
+            else {
+                liDropdown.slideUp();
+            }
+        });
+
+        // Close menu (mobile)
+
+        $close.on('click', function () {
+            $('nav').find('.expanded').removeClass('expanded');
+            $('nav').find('.navbar-dropdown').slideUp();
+        });
+
+        // Global functions
+
+        function toggleOpen(el) {
+            $(el).toggleClass('open');
+        }
+
+        function closeSearch() {
+            objSearch.removeClass('open');
+            $search.removeClass('open');
+        }
+        function closeLogin() {
+            objLogin.removeClass('open');
+            $login.removeClass('open');
+        }
+        function closeCart() {
+            objCart.removeClass('open');
+            $cart.removeClass('open');
+        }
+
+        // Sticky header
+        // ----------------------------------------------------------------
+
+        var navbarFixed = $('nav.navbar-fixed');
+
+        // When reload page - check if page has offset
+        if ($(document).scrollTop() > 94) {
+            navbarFixed.addClass('navbar-sticked');
+        }
+        // Add sticky menu on scroll
+        $(document).on('bind ready scroll', function () {
+            var docScroll = $(document).scrollTop();
+            if (docScroll >= 10) {
+                navbarFixed.addClass('navbar-sticked');
+            } else {
+                navbarFixed.removeClass('navbar-sticked');
+            }
+        });
+
+        // Tooltip
+        // ----------------------------------------------------------------
+
+        $('[data-toggle="tooltip"]').tooltip()
+
+        // Main popup
+        // ----------------------------------------------------------------
+
+        $('.mfp-open').magnificPopup({
+            type: 'inline',
+            fixedContentPos: false,
+            fixedBgPos: true,
+            overflowY: 'auto',
+            closeBtnInside: true,
+            preloader: false,
+            midClick: true,
+            removalDelay: 300,
+            mainClass: 'my-mfp-zoom-in',
+            callbacks: {
+                open: function () {
+                    // wait on popup initalization
+                    // then load owl-carousel
+                    $('.popup-main .owl-carousel').hide();
+                    setTimeout(function () {
+                        $('.popup-main .owl-carousel').slideDown();
+                    }, 500);
+                }
+            }
+        });
+
+        // Main popup gallery
+        // ----------------------------------------------------------------
+
+        $('.open-popup-gallery').magnificPopup({
+            delegate: 'a',
+            type: 'image',
+            tLoading: 'Loading image #%curr%...',
+            gallery: {
+                enabled: true,
+                navigateByImgClick: true,
+                preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
+            },
+            fixedContentPos: false,
+            fixedBgPos: true,
+            overflowY: 'auto',
+            closeBtnInside: true,
+            preloader: false,
+            midClick: true,
+            removalDelay: 300,
+            mainClass: 'my-mfp-zoom-in'
+        });
+
+
+        // Frontpage slider
+        // ----------------------------------------------------------------
+
+        var arrowIcons = [
+            '<span class="icon icon-chevron-left"></span>',
+            '<span class="icon icon-chevron-right"></span>'
+        ];
+
+        $.each($(".owl-slider"), function (i, n) {
+
+            $(n).owlCarousel({
+                autoHeight: false,
+                navigation: true,
+                navigationText: arrowIcons,
+                items: 1,
+                singleItem: true,
+                addClassActive: true,
+                transitionStyle: "fadeUp",
+                afterMove: animatetCaptions,
+                autoPlay: 8000,
+                stopOnHover: false
+            });
+
+            animatetCaptions();
+
+            function animatetCaptions(event) {
+                "use strict";
+                var activeItem = $(n).find('.owl-item.active'),
+                    timeDelay = 100;
+                $.each(activeItem.find('.animated'), function (j, m) {
+                    var item = $(m);
+                    item.css('animation-delay', timeDelay + 'ms');
+                    timeDelay = timeDelay + 180;
+                    item.addClass(item.data('animation'));
+                    setTimeout(function () {
+                        item.removeClass(item.data('animation'));
+                    }, 2000);
+                });
+            }
+
+            if ($(n).hasClass('owl-slider-fullscreen')) {
+                $('.header-content .item').height($(window).height());
+            }
+        });
+
+        // Quote carousel
+        // ----------------------------------------------------------------
+
+        $.each($(".quote-carousel"), function (i, n) {
+            $(n).owlCarousel({
+                navigation: true, // Show next and prev buttons
+                slideSpeed: 300,
+                items: 3,
+                paginationSpeed: 400,
+                singleItem: false,
+                navigationText: arrowIcons,
+                itemsDesktop: [1199, 3],
+                itemsDesktopSmall: [979, 3],
+                itemsTablet: [768, 1],
+                itemsTabletSmall: false,
+                itemsMobile: [479, 1],
+                autoPlay: 3000,
+                stopOnHover: true
+            });
+        });
+
+        // Icon slider
+        // ----------------------------------------------------------------
+
+
+        $.each($(".owl-icons"), function (i, n) {
+            $(n).owlCarousel({
+                autoHeight: false,
+                pagination: false,
+                navigation: true,
+                navigationText: arrowIcons,
+                items: 6,
+                itemsDesktop: [1199, 5],
+                itemsDesktopSmall: [979, 5],
+                itemsTablet: [768, 4],
+                itemsTabletSmall: false,
+                itemsMobile: [479, 3],
+                addClassActive: true,
+                autoPlay: 5500,
+                stopOnHover: true
+            });
+        });
+
+        //Product slider
+        $.each($(".owl-product-gallery"), function (i, n) {
+            $(n).owlCarousel({
+                //transitionStyle: "fadeUp",
+                autoHeight: true,
+                slideSpeed: 800,
+                navigation: true,
+                navigationText: arrowIcons,
+                pagination: true,
+                items: 1,
+                singleItem: true
+            });
+        });
+
+
+        // Scroll to top
+        // ----------------------------------------------------------------
+
+        var $wrapper = $('.wrapper');
+        $wrapper.append($("<div class='scroll-top'><i class='icon icon-chevron-up'></i></div>"));
+
+        var $scrollbtn = $('.scroll-top');
+
+        $(document).on('ready scroll', function () {
+            var docScrollTop = $(document).scrollTop(),
+                docScrollBottom = $(window).scrollTop() + $(window).height() == $(document).height();
+
+            if (docScrollTop >= 150) {
+                $scrollbtn.addClass('visible');
+            } else {
+                $scrollbtn.removeClass('visible');
+            }
+            if (docScrollBottom) {
+                $scrollbtn.addClass('active');
+            }
+            else {
+                $scrollbtn.removeClass('active');
+            }
+        });
+
+        $scrollbtn.on('click', function () {
+            $('html,body').animate({
+                scrollTop: $('body').offset().top
+            }, 1000);
+            return false;
+        });
+
+        // Product color var
+        // ----------------------------------------------------------------
+
+        $.each($('.product-colors'), function (i, n) {
+            var $btn = $('.color-btn');
+            $btn.on('click', function () {
+                $(this).parent().find($btn).removeClass('checked');
+                $(this).addClass('checked');
+            });
+        });
+
+        // Tabsy images
+        // ----------------------------------------------------------------
+
+        var tabsyImg = $('.tabsy .tabsy-images > div'),
+            tabsyLink = $('.tabsy .tabsy-links figure');
+
+        // apply images to parent background
+        tabsyImg.each(function (i, n) {
+            $(n).css('background-image', 'url(' + $(n).find('img').attr('src') + ')');
+        });
+
+        tabsyLink.bind('mouseenter mouseleave', function () {
+            var self = $(this),
+                tabID = self.attr('data-image');
+            tabsyLink.removeClass('current');
+            tabsyImg.removeClass('current');
+            self.addClass('current');
+            self.closest('.tabsy').find("#" + tabID).addClass('current');
+        });
+
+
+        // Add to favorites list / product list
+        // ----------------------------------------------------------------
+
+        $('.add-favorite').on('click', function () {
+            $(this).toggleClass("added");
+        });
+
+        $('.info-box-addto').on('click', function () {
+            $(this).toggleClass('added');
+        });
+
+        // Filters toggle functions
+        // ----------------------------------------------------------------
+
+        // Check if some filter boxes has class active
+        // then show hidden filters
+        $('.filters .filter-box').each(function () {
+            if ($(this).hasClass('active')) {
+                $(this).find('.filter-content').show();
+            }
+        });
+
+        var $filtersTitle = $('.filters .title');
+
+        // Add emtpy span on title
+        $filtersTitle.append('<span>' + '</span>');
+
+        // Toggle filter function
+        $filtersTitle.on('click', function (e) {
+            var $this = $(this),
+                $parent = $this.parent();
+            $parent.toggleClass('active');
+
+            if ($parent.hasClass('active')) {
+                $parent.find('.filter-content').slideDown(300);
+            }
+            else {
+                $parent.find('.filter-content').slideUp(200);
+            }
+        });
+
+        // Update filter results - close dropdown filters
+        // ----------------------------------------------------------------
+
+        $('.filters .filter-update').on('click', function (e) {
+            $(this).closest('.filter-box')
+                .removeClass('active')
+                .find('.filter-content').slideUp(200);
+        });
+
+        // Only for filters topbar
+        // ----------------------------------------------------------------
+
+        $('.filters input').on('change', function () {
+            if ($(this).is(':checked')) {
+                var $labelText = $(this).parent().find('label').text(),
+                    $title = $(this).closest('.filter-box').find('.title');
+
+                $title.find('span').text($labelText);
+            }
+        });
+
+        // Show hide filters (only for mobile)
+        // ----------------------------------------------------------------
+
+        $('.toggle-filters-mobile').on('click', function () {
+            $('.filters').addClass('active');
+        });
+        $('.toggle-filters-close').on('click', function () {
+            $('.filters').removeClass('active');
+            $('html,body').animate({
+                scrollTop: $('body').offset().top
+            }, 800);
+            return false;
+        });
+
+
+        // Strecher accordion
+        // ----------------------------------------------------------------
+
+        var $strecherItem = $('.stretcher-item');
+        $strecherItem.bind({
+            mouseenter: function (e) {
+                $(this).addClass('active');
+                $(this).siblings().addClass('inactive');
+            },
+            mouseleave: function (e) {
+                $(this).removeClass('active');
+                $(this).siblings().removeClass('inactive');
+            }
+        });
+
+        // Blog image caption
+        // ----------------------------------------------------------------
+
+        var $blogImage = $('.blog-post-text img');
+        $blogImage.each(function () {
+            var $this = $(this);
+            $this.wrap('<span class="blog-image"></span>');
+            if ($this.attr("alt")) {
+                var caption = this.alt;
+                var link = $this.attr('data');
+                $this.after('<span class="caption">' + caption + '</span>');
+            }
+        });
+
+        // Coupon code
+        // ----------------------------------------------------------------
+
+        $(".form-coupon").hide();
+        $("#couponCodeID").on('click', function () {
+            if ($(this).is(":checked")) {
+                $(".form-coupon").fadeIn();
+            } else {
+                $(".form-coupon").fadeOut();
+            }
+        });
+
+        // Checkout login / register
+        // ----------------------------------------------------------------
+
+        var loginWrapper = $('.login-wrapper'),
+            loginBtn = loginWrapper.find('.btn-login'),
+            regBtn = loginWrapper.find('.btn-register'),
+            signUp = loginWrapper.find('.login-block-signup'),
+            signIn = loginWrapper.find('.login-block-signin');
+
+        loginBtn.on('click', function () {
+            signIn.slideDown();
+            signUp.slideUp();
+        });
+
+        regBtn.on('click', function () {
+            signIn.slideUp();
+            signUp.slideDown();
+        });
+
+        // Isotope filter
+        // ----------------------------------------------------------------
+
+        $(function () {
+            var price = 0;
+            var $products = $("#products");
+            var $checkboxes = $("#filters input");
+            var $sortPrice = $("#sort-price");
+            var filters = [];
+
+            $(".item").addClass("show-me");
+            filters.push(".show-me");
+
+            // Sort products
+            // --------------------------------------
+
+            $products.isotope({
+                itemSelector: '.item',
+                getSortData: {
+                    number: '.price parseInt'
+                },
+                sortBy: 'number'
+            });
+
+            // Checkboxes & radiobuttons
+            // --------------------------------------
+
+            $sortPrice.on('change', function () {
+                var order = $('option:selected', this).attr('data-option-value');
+                var valAscending = (order == "asc");
+
+                $products.isotope({
+                    itemSelector: '.item',
+                    getSortData: {
+                        number: '.price parseInt'
+                    },
+                    sortBy: 'number',
+                    sortAscending: valAscending,
+                    filter: filters
+                });
+
+            });
+
+            // Checkboxes & radiobuttons
+            // --------------------------------------
+
+            $checkboxes.on('change', function () {
+                filters = [];
+                filters.push(".show-me");
+                $checkboxes.filter(':checked').each(function () {
+                    filters.push(this.value);
+                });
+
+                filters = filters.join('');
+                $products.isotope({
+                    filter: filters
+                });
+
+            });
+
+            // Range slider
+            // --------------------------------------
+
+            $("#range-price-slider").ionRangeSlider({
+                type: "double",
+                min: 0,
+                max: 4000,
+                from: 150,
+                to: 3800,
+                prefix: "$",
+                onChange: function (data) {
+
+                    $(".item").each(function () {
+
+                        price = parseInt($(this).find(".price").text(), 10);
+
+                        if (data.from <= price && data.to >= price) {
+                            $(this).addClass('show-me');
+                        }
+                        else {
+                            $(this).removeClass('show-me');
+                        }
+                    });
+
+                    $products.isotope({
+                        itemSelector: '.item',
+                        filter: filters
+                    });
+                }
+            });
+
+        });
+
+        // Single page - box filters
+        // ----------------------------------------------------------------
+        $(function () {
+
+            // Filter buttons - toggle click event
+
+            var $boxFilter = $('.box-filters figure');
+
+            // init Isotope
+            var $grid = $('#box-filters-results').isotope({
+                itemSelector: '.item'
+            });
+
+            $boxFilter.on('click', function () {
+                var $this = $(this);
+                // Filter buttons - toggle click event
+                if ($this.hasClass('active')) {
+                    $this.removeClass('active');
+
+                    $grid.isotope({ filter: "" });
+                }
+                else {
+                    $boxFilter.removeClass('active');
+                    $this.addClass('active');
+
+                    // Filter results
+                    var filterValue = $this.attr('data-filter');
+                    $grid.isotope({ filter: filterValue });
+                }
+
+
+
+            });
+
+
+        });
+
+
+
+        // Team members hover effect
+        // ----------------------------------------------------------------
+
+        var $member = $('.team article');
+        $member.bind({
+            mouseenter: function (e) {
+                $member.addClass('inactive');
+                $(this).addClass('active');
+            },
+            mouseleave: function (e) {
+                $member.removeClass('inactive');
+                $(this).removeClass('active');
+            }
+        });
+
+        // Toggle contact form
+        // ----------------------------------------------------------------
+
+        $('.open-form').on('click', function () {
+            var $this = $(this),
+                parent = $this.parent();
+            parent.toggleClass('active');
+            if (parent.hasClass('active')) {
+                $this.text($this.data('text-close'));
+                $('.contact-form').slideDown();
+            }
+            else {
+                $this.text($this.data('text-open'));
+                $('.contact-form').slideUp();
+            }
+
+        });
+
+        // Single page navigation (scroll to)
+        // ----------------------------------------------------------------
+
+
+        if ($('nav').hasClass('navbar-single-page')) {
+
+            var $singleHyperlink = $('.navigation-main a');
+
+            $singleHyperlink.on('click', function () {
+
+                $singleHyperlink.removeClass('current');
+
+                $(this).addClass('current');
+
+                $('html, body').animate({
+                    scrollTop: $($(this).attr('href')).offset().top - $('.navigation-main').height()
+                }, 500);
+                return false;
+            });
+
+            // Magnific popup scroll to content
+            // ----------------------------------------------------------------
+
+            $('.mfp-open-scrollto').on('click', function () {
+                $('html,body').animate({
+                    scrollTop: $('.mfp-content').offset().top - 200
+                }, 300);
+                return false;
+            });
+        }
     });
 </script>
 
@@ -53,258 +729,5 @@
             </main>
             <Footer/>
         </div>
-
-        <!--        <div class="min-h-screen bg-gray-100">-->
-        <!--            <nav class="bg-white border-b border-gray-100">-->
-        <!--                &lt;!&ndash; Primary Navigation Menu &ndash;&gt;-->
-        <!--                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">-->
-        <!--                    <div class="flex justify-between h-16">-->
-        <!--                        <div class="flex">-->
-        <!--                            &lt;!&ndash; Logo &ndash;&gt;-->
-        <!--                            <div class="shrink-0 flex items-center">-->
-        <!--                                <Link :href="route('dashboard')">-->
-        <!--                                    <ApplicationMark class="block h-9 w-auto" />-->
-        <!--                                </Link>-->
-        <!--                            </div>-->
-
-        <!--                            &lt;!&ndash; Navigation Links &ndash;&gt;-->
-        <!--                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">-->
-        <!--                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">-->
-        <!--                                    Dashboard-->
-        <!--                                </NavLink>-->
-        <!--                            </div>-->
-        <!--                        </div>-->
-
-        <!--                        <div class="hidden sm:flex sm:items-center sm:ms-6">-->
-        <!--                            <div class="ms-3 relative">-->
-        <!--                                &lt;!&ndash; Teams Dropdown &ndash;&gt;-->
-        <!--                                <Dropdown v-if="$page.props.jetstream.hasTeamFeatures" align="right" width="60">-->
-        <!--                                    <template #trigger>-->
-        <!--                                        <span class="inline-flex rounded-md">-->
-        <!--                                            <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">-->
-        <!--                                                {{ $page.props.auth.user.current_team.name }}-->
-
-        <!--                                                <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">-->
-        <!--                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />-->
-        <!--                                                </svg>-->
-        <!--                                            </button>-->
-        <!--                                        </span>-->
-        <!--                                    </template>-->
-
-        <!--                                    <template #content>-->
-        <!--                                        <div class="w-60">-->
-        <!--                                            &lt;!&ndash; Team Management &ndash;&gt;-->
-        <!--                                            <div class="block px-4 py-2 text-xs text-gray-400">-->
-        <!--                                                Manage Team-->
-        <!--                                            </div>-->
-
-        <!--                                            &lt;!&ndash; Team Settings &ndash;&gt;-->
-        <!--                                            <DropdownLink :href="route('teams.show', $page.props.auth.user.current_team)">-->
-        <!--                                                Team Settings-->
-        <!--                                            </DropdownLink>-->
-
-        <!--                                            <DropdownLink v-if="$page.props.jetstream.canCreateTeams" :href="route('teams.create')">-->
-        <!--                                                Create New Team-->
-        <!--                                            </DropdownLink>-->
-
-        <!--                                            &lt;!&ndash; Team Switcher &ndash;&gt;-->
-        <!--                                            <template v-if="$page.props.auth.user.all_teams.length > 1">-->
-        <!--                                                <div class="border-t border-gray-200" />-->
-
-        <!--                                                <div class="block px-4 py-2 text-xs text-gray-400">-->
-        <!--                                                    Switch Teams-->
-        <!--                                                </div>-->
-
-        <!--                                                <template v-for="team in $page.props.auth.user.all_teams" :key="team.id">-->
-        <!--                                                    <form @submit.prevent="switchToTeam(team)">-->
-        <!--                                                        <DropdownLink as="button">-->
-        <!--                                                            <div class="flex items-center">-->
-        <!--                                                                <svg v-if="team.id == $page.props.auth.user.current_team_id" class="me-2 h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">-->
-        <!--                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />-->
-        <!--                                                                </svg>-->
-
-        <!--                                                                <div>{{ team.name }}</div>-->
-        <!--                                                            </div>-->
-        <!--                                                        </DropdownLink>-->
-        <!--                                                    </form>-->
-        <!--                                                </template>-->
-        <!--                                            </template>-->
-        <!--                                        </div>-->
-        <!--                                    </template>-->
-        <!--                                </Dropdown>-->
-        <!--                            </div>-->
-
-        <!--                            &lt;!&ndash; Settings Dropdown &ndash;&gt;-->
-        <!--                            <div class="ms-3 relative">-->
-        <!--                                <Dropdown align="right" width="48">-->
-        <!--                                    <template #trigger>-->
-        <!--                                        <button v-if="$page.props.jetstream.managesProfilePhotos" class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">-->
-        <!--                                            <img class="h-8 w-8 rounded-full object-cover" :src="$page.props.auth.user.profile_photo_url" :alt="$page.props.auth.user.name">-->
-        <!--                                        </button>-->
-
-        <!--                                        <span v-else class="inline-flex rounded-md">-->
-        <!--                                            <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">-->
-        <!--                                                {{ $page.props.auth.user.name }}-->
-
-        <!--                                                <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">-->
-        <!--                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />-->
-        <!--                                                </svg>-->
-        <!--                                            </button>-->
-        <!--                                        </span>-->
-        <!--                                    </template>-->
-
-        <!--                                    <template #content>-->
-        <!--                                        &lt;!&ndash; Account Management &ndash;&gt;-->
-        <!--                                        <div class="block px-4 py-2 text-xs text-gray-400">-->
-        <!--                                            Manage Account-->
-        <!--                                        </div>-->
-
-        <!--                                        <DropdownLink :href="route('profile.show')">-->
-        <!--                                            Profile-->
-        <!--                                        </DropdownLink>-->
-
-        <!--                                        <DropdownLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')">-->
-        <!--                                            API Tokens-->
-        <!--                                        </DropdownLink>-->
-
-        <!--                                        <div class="border-t border-gray-200" />-->
-
-        <!--                                        &lt;!&ndash; Authentication &ndash;&gt;-->
-        <!--                                        <form @submit.prevent="logout">-->
-        <!--                                            <DropdownLink as="button">-->
-        <!--                                                Log Out-->
-        <!--                                            </DropdownLink>-->
-        <!--                                        </form>-->
-        <!--                                    </template>-->
-        <!--                                </Dropdown>-->
-        <!--                            </div>-->
-        <!--                        </div>-->
-
-        <!--                        &lt;!&ndash; Hamburger &ndash;&gt;-->
-        <!--                        <div class="-me-2 flex items-center sm:hidden">-->
-        <!--                            <button class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out" @click="showingNavigationDropdown = ! showingNavigationDropdown">-->
-        <!--                                <svg-->
-        <!--                                    class="h-6 w-6"-->
-        <!--                                    stroke="currentColor"-->
-        <!--                                    fill="none"-->
-        <!--                                    viewBox="0 0 24 24"-->
-        <!--                                >-->
-        <!--                                    <path-->
-        <!--                                        :class="{'hidden': showingNavigationDropdown, 'inline-flex': ! showingNavigationDropdown }"-->
-        <!--                                        stroke-linecap="round"-->
-        <!--                                        stroke-linejoin="round"-->
-        <!--                                        stroke-width="2"-->
-        <!--                                        d="M4 6h16M4 12h16M4 18h16"-->
-        <!--                                    />-->
-        <!--                                    <path-->
-        <!--                                        :class="{'hidden': ! showingNavigationDropdown, 'inline-flex': showingNavigationDropdown }"-->
-        <!--                                        stroke-linecap="round"-->
-        <!--                                        stroke-linejoin="round"-->
-        <!--                                        stroke-width="2"-->
-        <!--                                        d="M6 18L18 6M6 6l12 12"-->
-        <!--                                    />-->
-        <!--                                </svg>-->
-        <!--                            </button>-->
-        <!--                        </div>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-
-        <!--                &lt;!&ndash; Responsive Navigation Menu &ndash;&gt;-->
-        <!--                <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">-->
-        <!--                    <div class="pt-2 pb-3 space-y-1">-->
-        <!--                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">-->
-        <!--                            Dashboard-->
-        <!--                        </ResponsiveNavLink>-->
-        <!--                    </div>-->
-
-        <!--                    &lt;!&ndash; Responsive Settings Options &ndash;&gt;-->
-        <!--                    <div class="pt-4 pb-1 border-t border-gray-200">-->
-        <!--                        <div class="flex items-center px-4">-->
-        <!--                            <div v-if="$page.props.jetstream.managesProfilePhotos" class="shrink-0 me-3">-->
-        <!--                                <img class="h-10 w-10 rounded-full object-cover" :src="$page.props.auth.user.profile_photo_url" :alt="$page.props.auth.user.name">-->
-        <!--                            </div>-->
-
-        <!--                            <div>-->
-        <!--                                <div class="font-medium text-base text-gray-800">-->
-        <!--                                    {{ $page.props.auth.user.name }}-->
-        <!--                                </div>-->
-        <!--                                <div class="font-medium text-sm text-gray-500">-->
-        <!--                                    {{ $page.props.auth.user.email }}-->
-        <!--                                </div>-->
-        <!--                            </div>-->
-        <!--                        </div>-->
-
-        <!--                        <div class="mt-3 space-y-1">-->
-        <!--                            <ResponsiveNavLink :href="route('profile.show')" :active="route().current('profile.show')">-->
-        <!--                                Profile-->
-        <!--                            </ResponsiveNavLink>-->
-
-        <!--                            <ResponsiveNavLink v-if="$page.props.jetstream.hasApiFeatures" :href="route('api-tokens.index')" :active="route().current('api-tokens.index')">-->
-        <!--                                API Tokens-->
-        <!--                            </ResponsiveNavLink>-->
-
-        <!--                            &lt;!&ndash; Authentication &ndash;&gt;-->
-        <!--                            <form method="POST" @submit.prevent="logout">-->
-        <!--                                <ResponsiveNavLink as="button">-->
-        <!--                                    Log Out-->
-        <!--                                </ResponsiveNavLink>-->
-        <!--                            </form>-->
-
-        <!--                            &lt;!&ndash; Team Management &ndash;&gt;-->
-        <!--                            <template v-if="$page.props.jetstream.hasTeamFeatures">-->
-        <!--                                <div class="border-t border-gray-200" />-->
-
-        <!--                                <div class="block px-4 py-2 text-xs text-gray-400">-->
-        <!--                                    Manage Team-->
-        <!--                                </div>-->
-
-        <!--                                &lt;!&ndash; Team Settings &ndash;&gt;-->
-        <!--                                <ResponsiveNavLink :href="route('teams.show', $page.props.auth.user.current_team)" :active="route().current('teams.show')">-->
-        <!--                                    Team Settings-->
-        <!--                                </ResponsiveNavLink>-->
-
-        <!--                                <ResponsiveNavLink v-if="$page.props.jetstream.canCreateTeams" :href="route('teams.create')" :active="route().current('teams.create')">-->
-        <!--                                    Create New Team-->
-        <!--                                </ResponsiveNavLink>-->
-
-        <!--                                &lt;!&ndash; Team Switcher &ndash;&gt;-->
-        <!--                                <template v-if="$page.props.auth.user.all_teams.length > 1">-->
-        <!--                                    <div class="border-t border-gray-200" />-->
-
-        <!--                                    <div class="block px-4 py-2 text-xs text-gray-400">-->
-        <!--                                        Switch Teams-->
-        <!--                                    </div>-->
-
-        <!--                                    <template v-for="team in $page.props.auth.user.all_teams" :key="team.id">-->
-        <!--                                        <form @submit.prevent="switchToTeam(team)">-->
-        <!--                                            <ResponsiveNavLink as="button">-->
-        <!--                                                <div class="flex items-center">-->
-        <!--                                                    <svg v-if="team.id == $page.props.auth.user.current_team_id" class="me-2 h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">-->
-        <!--                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />-->
-        <!--                                                    </svg>-->
-        <!--                                                    <div>{{ team.name }}</div>-->
-        <!--                                                </div>-->
-        <!--                                            </ResponsiveNavLink>-->
-        <!--                                        </form>-->
-        <!--                                    </template>-->
-        <!--                                </template>-->
-        <!--                            </template>-->
-        <!--                        </div>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--            </nav>-->
-
-        <!--            &lt;!&ndash; Page Heading &ndash;&gt;-->
-        <!--            <header v-if="$slots.header" class="bg-white shadow">-->
-        <!--                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">-->
-        <!--                    <slot name="header" />-->
-        <!--                </div>-->
-        <!--            </header>-->
-
-        <!--            &lt;!&ndash; Page Content &ndash;&gt;-->
-        <!--            <main>-->
-        <!--                <slot />-->
-        <!--            </main>-->
-        <!--        </div>-->
     </div>
 </template>
