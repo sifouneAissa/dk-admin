@@ -1,0 +1,13 @@
+<?php
+
+return [
+        [
+            'text' => 'Dashboard',
+            'icon' => 'fa-tachometer-alt',
+            'route' => 'admin.dashboard',
+            'children' => [
+
+            ],
+        ],
+
+];

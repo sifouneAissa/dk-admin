@@ -24,5 +24,10 @@ class AppServiceProvider extends ServiceProvider
         Inertia::share('template' , function (){
             return adminRequest() ? 'app' : 'app-client';
         });
+
+
+        Inertia::share('sidebar' , function (){
+            return config('sidebar');
+        });
     }
 }

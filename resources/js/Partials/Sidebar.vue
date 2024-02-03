@@ -1,21 +1,38 @@
-<script setup>
-    import { ref } from 'vue';
-    import { Head, Link, router } from '@inertiajs/vue3';
-    defineProps({
-        title: String,
-    });
+<script>
+    import {Head, Link, router} from '@inertiajs/vue3';
+    import NavItem from "@/Partials/Sidebar/NavItem.vue";
 
-    const logout = () => {
-        router.post(route('logout'));
-    };
+    export default {
+        components : {
+            NavItem
+        },
+        data() {
+            return {};
+        },
+        computed: {
+            sidebar() {
+                return this.$page.props.sidebar;
+            }
+        },
+        mounted() {
+            this.$page.props.sidebar.map((item) => {
+                console.log(item.text);
+            });
+        },
+        methods: {
+            logout() {
+                router.post(route('logout'));
+            },
+            profile() {
+                router.visit(route('profile.show'));
+            }, dashboard() {
+                router.visit(route('dashboard'));
+            }
+        },
 
-    const profile = () => {
-        router.visit(route('profile.show'));
-    };
-    const dashboard = () => {
-        router.visit(route('dashboard'));
-    };
+    }
 </script>
+
 <template>
     <div>
 
@@ -23,7 +40,8 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
             <a href="#" @click="dashboard" class="brand-link">
-                <img src="/adminlte/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <img src="/adminlte/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
+                     class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">DK admin</span>
             </a>
 
@@ -42,7 +60,8 @@
                 <!-- SidebarSearch Form -->
                 <div class="form-inline">
                     <div class="input-group" data-widget="sidebar-search">
-                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                        <input class="form-control form-control-sidebar" type="search" placeholder="Search"
+                               aria-label="Search">
                         <div class="input-group-append">
                             <button class="btn btn-sidebar">
                                 <i class="fas fa-search fa-fw"></i>
@@ -53,41 +72,43 @@
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                              with font-awesome or any other icon font library -->
-                        <li class="nav-item menu-open">
-                            <a href="#" class="nav-link active">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Starter Pages
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link active">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Active Page</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Inactive Page</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    Simple Link
-                                    <span class="right badge badge-danger">New</span>
-                                </p>
-                            </a>
-                        </li>
+<!--                        <li class="nav-item menu-open">-->
+<!--                            <a href="#" class="nav-link active">-->
+<!--                                <i class="nav-icon fas fa-tachometer-alt"></i>-->
+<!--                                <p>-->
+<!--                                    Starter Pages-->
+<!--                                    <i class="right fas fa-angle-left"></i>-->
+<!--                                </p>-->
+<!--                            </a>-->
+<!--                            <ul class="nav nav-treeview">-->
+<!--                                <li class="nav-item">-->
+<!--                                    <a href="#" class="nav-link active">-->
+<!--                                        <i class="far fa-circle nav-icon"></i>-->
+<!--                                        <p>Active Page</p>-->
+<!--                                    </a>-->
+<!--                                </li>-->
+<!--                                <li class="nav-item">-->
+<!--                                    <a href="#" class="nav-link">-->
+<!--                                        <i class="far fa-circle nav-icon"></i>-->
+<!--                                        <p>Inactive Page</p>-->
+<!--                                    </a>-->
+<!--                                </li>-->
+<!--                            </ul>-->
+<!--                        </li>-->
+<!--                        <li class="nav-item">-->
+<!--                            <a href="#" class="nav-link">-->
+<!--                                <i class="nav-icon fas fa-th"></i>-->
+<!--                                <p>-->
+<!--                                    Simple Link-->
+<!--                                    <span class="right badge badge-danger">New</span>-->
+<!--                                </p>-->
+<!--                            </a>-->
+<!--                        </li>-->
+                        <NavItem v-for="(item, key) in this.sidebar" :key="key" :item="item" />
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->

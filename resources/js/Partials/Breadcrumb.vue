@@ -1,4 +1,4 @@
-<script>
+[<script>
     export default {
         data() {
             return {
@@ -19,7 +19,7 @@
             }
         }
     }
-</script>
+</script>]
 
 <template>
     <!-- Content Header (Page header) -->

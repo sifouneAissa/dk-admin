@@ -16,4 +16,5 @@ class DashboardController extends Controller
             'link' => route('admin.dashboard')
         ]));
     }
+
 }
