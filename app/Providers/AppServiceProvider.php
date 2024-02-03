@@ -29,5 +29,9 @@ class AppServiceProvider extends ServiceProvider
         Inertia::share('sidebar' , function (){
             return config('sidebar');
         });
+
+        Inertia::share('permissions' , function (){
+            return auth()->user()?->getAllPermissions()->pluck('name');
+        });
     }
 }
