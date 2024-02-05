@@ -16,7 +16,7 @@ if (!function_exists('requestPrefix')) {
     {
         if (!$request) $request = request();
 
-        if(is_string($request))
+        if (is_string($request))
             $prefix = getPrefix($request);
         else
             $prefix = $request->route()->getPrefix();
@@ -42,22 +42,27 @@ if (!function_exists('getPrefix')) {
 }
 
 
-
 if (!function_exists('buildBreadCrumb')) {
 
-    function buildBreadCrumb($header,$activeHeader = null,$forAdmin = true)
+    function buildBreadCrumb($activeHeader = null, $header = null, $useDashboard = true)
     {
+        if ($useDashboard)
+            $header = [
+                'title' => 'Dashboard',
+                'link' => route('admin.dashboard')
+            ];
+
         return [
             'breadcrumb' => [
-                'header' => [
-                    'title' => $header['title'],
-                    'link' => $header['link']
-                ],
-                'active_header' => $activeHeader ?  [
-                    'title' => $activeHeader['title'],
-                    'link' => $activeHeader['link']
-                ] : null
-            ]
-         ];
+                    'header' => [
+                        'title' => $header['title'],
+                        'link' => $header['link']
+                    ],
+                    'active_header' => $activeHeader ? [
+                        'title' => $activeHeader['title'],
+                        'link' => $activeHeader['link']
+                    ] : null
+                ]
+        ];
     }
 }

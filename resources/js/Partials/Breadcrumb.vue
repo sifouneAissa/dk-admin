@@ -1,8 +1,20 @@
 [<script>
+    import {router} from "@inertiajs/vue3";
+
     export default {
         data() {
             return {
             };
+        },
+        mounted() {
+            console.log(this.$page.props.breadcrumb.header);
+        },
+        methods : {
+            goTo(routeName){
+                if(!routeName) router.reload();
+                else
+                    router.visit(routeName);
+            }
         },
         computed : {
             breadcrumb() {
@@ -16,7 +28,7 @@
             },
             header(){
                 return this.breadcrumb?.header;
-            }
+            },
         }
     }
 </script>]
@@ -31,7 +43,7 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{header.link}}">{{header?.title}}</a></li>
+                        <li class="breadcrumb-item"><a href="#" @click="goTo(header?.link)">{{header?.title}}</a></li>
                         <li v-if="activeHeader" class="breadcrumb-item active">{{activeHeader?.title}}</li>
                     </ol>
                 </div><!-- /.col -->

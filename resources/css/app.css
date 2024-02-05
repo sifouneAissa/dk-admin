@@ -28,9 +28,9 @@
 /* Summernote */
 @import '../../public/adminlte/plugins/summernote/summernote-bs4.min.css';
 
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
 
 [x-cloak] {
     display: none;

@@ -12,6 +12,7 @@ use Inertia\Inertia;
     ])->group(function () {
 
         \Illuminate\Support\Facades\Route::get('/dashboard',[\App\Http\Controllers\Admin\DashboardController::class,'index'])->name('dashboard');
+        \Illuminate\Support\Facades\Route::get('/category',[\App\Http\Controllers\CategoryController::class,'index'])->name('category');
         \Illuminate\Support\Facades\Route::get('/test',function (){
             return 'hello';
         })->name('test');

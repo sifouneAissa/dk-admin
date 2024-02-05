@@ -11,10 +11,7 @@ class DashboardController extends Controller
     //
 
     public function index(Request $request){
-        return Inertia::render('Dashboard',buildBreadCrumb([
-            'title' => 'Dashboard',
-            'link' => route('admin.dashboard')
-        ]));
+        return Inertia::render('Dashboard',buildBreadCrumb());
     }
 
 }

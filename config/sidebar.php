@@ -9,5 +9,13 @@ return [
 
             ],
         ],
+        [
+            'text' => 'Categories',
+            'icon' => 'fa-tags',
+            'route' => 'admin.category',
+            'children' => [
+
+            ],
+        ],
 
 ];
