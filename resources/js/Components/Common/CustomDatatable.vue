@@ -59,7 +59,7 @@
             </DataTable>
         </div>
 
-        <Dialog v-model:visible="productDialog" :style="{width: '450px'}" header="Product Details" :modal="true" class="p-fluid">
+        <!-- <Dialog v-model:visible="productDialog" :style="{width: '450px'}" header="Product Details" :modal="true" class="p-fluid">
             <img v-if="product.image" :src="`https://primefaces.org/cdn/primevue/images/product/${product.image}`" :alt="product.image" class="block m-auto pb-3" />
             <div class="field">
                 <label for="name">Name</label>
@@ -146,7 +146,7 @@
                 <Button label="No" icon="pi pi-times" text @click="deleteProductsDialog = false"/>
                 <Button label="Yes" icon="pi pi-check" text @click="deleteSelectedProducts" />
             </template>
-        </Dialog>
+        </Dialog> -->
 
     </div>
 </template>

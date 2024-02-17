@@ -1,6 +1,6 @@
 <template>
     <div>
-        <CustomDatatable :header="'Manage Categories'"  />
+        <CustomDatatable :header="'Manage Categories'"   />
     </div>
 </template>
 

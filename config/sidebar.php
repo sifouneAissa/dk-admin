@@ -10,6 +10,14 @@ return [
             ],
         ],
         [
+            'text' => 'Products',
+            'icon' => 'fa-tags',
+            'route' => 'admin.product',
+            'children' => [
+
+            ],
+        ],
+        [
             'text' => 'Categories',
             'icon' => 'fa-tags',
             'route' => 'admin.category',

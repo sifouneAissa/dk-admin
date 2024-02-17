@@ -13,6 +13,8 @@ use Inertia\Inertia;
 
         \Illuminate\Support\Facades\Route::get('/dashboard',[\App\Http\Controllers\Admin\DashboardController::class,'index'])->name('dashboard');
         \Illuminate\Support\Facades\Route::get('/category',[\App\Http\Controllers\CategoryController::class,'index'])->name('category');
+        \Illuminate\Support\Facades\Route::get('/product',[\App\Http\Controllers\ProductController::class,'index'])->name('product');
+        \Illuminate\Support\Facades\Route::get('/product/list',[\App\Http\Controllers\ProductController::class,'lindex'])->name('product.lindex');
         \Illuminate\Support\Facades\Route::get('/test',function (){
             return 'hello';
         })->name('test');
