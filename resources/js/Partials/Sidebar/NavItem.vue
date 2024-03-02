@@ -66,7 +66,11 @@ export default {
         },
         can() {
             return this.$page.props.permissions.some((item) => item === this.per) || !this.per;
-        }
+        },
+        canView() {
+            return this.item.visible === true;
+        },
+        
     }
 }
 </script>
@@ -74,7 +78,7 @@ export default {
 <template>
     <!-- Add icons to the links using the .nav-icon class
          with font-awesome or any other icon font library -->
-    <li v-if="can" :class="'nav-item ' + (!childrenEmpty ? 'menu-open' : '')">
+    <li v-if="can && canView " :class="'nav-item ' + (!childrenEmpty ? 'menu-open' : '')">
         <a @click="visitRoute()" href="#" :class="'nav-link ' + (isCurrent || hasActive ? 'active' : '')">
             <i :class="'nav-icon fas ' + icon"></i>
             <p>

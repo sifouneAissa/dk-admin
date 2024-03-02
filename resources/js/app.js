@@ -15,6 +15,8 @@ import ToastService from 'primevue/toastservice';
 import PrimeVue from 'primevue/config';
 import 'primevue/resources/themes/aura-light-green/theme.css'
 
+import ConfirmationService from 'primevue/confirmationservice';
+
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -26,6 +28,7 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue)
             .use(ToastService)
+            .use(ConfirmationService)
             .use(PrimeVue)
             .mount(el);
     },

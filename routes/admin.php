@@ -18,6 +18,10 @@ use Inertia\Inertia;
             \Illuminate\Support\Facades\Route::get('/list',[\App\Http\Controllers\ProductController::class,'lindex'])->name('lindex');
             \Illuminate\Support\Facades\Route::get('/',[\App\Http\Controllers\ProductController::class,'index'])->name('index');
             \Illuminate\Support\Facades\Route::get('/create',[\App\Http\Controllers\ProductController::class,'create'])->name('create');
+            \Illuminate\Support\Facades\Route::get('/{product}/edit',[\App\Http\Controllers\ProductController::class,'edit'])->name('edit');
+            \Illuminate\Support\Facades\Route::patch('/{product}',[\App\Http\Controllers\ProductController::class,'update'])->name('update');
+            \Illuminate\Support\Facades\Route::delete('/{product}',[\App\Http\Controllers\ProductController::class,'destroy'])->name('destroy');
+
             \Illuminate\Support\Facades\Route::post('/',[\App\Http\Controllers\ProductController::class,'store'])->name('store');
         });
 

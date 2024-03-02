@@ -16,38 +16,52 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     }
 
 
-    public function list($data,$useResource = false,$useResponce = false,$usePaginate = true){
-        
-        $models = $this->model->orderBy('created_at','desc');
+    public function list($data, $useResource = false, $useResponce = false, $usePaginate = true)
+    {
+
+        $models = $this->model->orderBy('created_at', 'desc');
 
         $result = (new EventFilter($data))->applyFilter($models);
-        
-        if(!$result) {
-            if($usePaginate)
-            $models = $models->paginate($this->perPage());
+
+        if (!$result) {
+            if ($usePaginate)
+                $models = $models->paginate($this->perPage());
             else $models = $models->get();
-        }
-        else {
+        } else {
             $models = $result;
         }
-    
-        if($useResponce)
+
+        if ($useResponce)
             $models = ProductCollectionResource::make($models);
-        if($useResource)
+        if ($useResource)
             $models = $this->response($models);
 
         return $models;
     }
-   
 
-    public function store($data,$useResource =false){
-        
+
+    public function store($data, $useResource = false)
+    {
+
         $data = $this->model->create($data);
 
-        if($useResource){
+        if ($useResource) {
             return ProductResource::make($data);
         }
 
         return $data;
+    }
+
+    public function update($data, Product $product, $useResource = false)
+    {
+
+        return $product->update(
+            $data
+        );
+    }
+
+
+    public function destroy($data,Product $product,$useResource =false){
+        return $product->delete();
     }
 }

@@ -1,6 +1,7 @@
 
 <template>
     <div class="card p-fluid">
+        <Toast />
         <Toolbar class="mb-4">
             <template #start>
                 <Button label="New" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" />
@@ -15,7 +16,7 @@
         </Toolbar>
 
 
-        <DataTable :rowsPerPageOptions="rows" :value="customers" lazy paginator :first="first" :rows="perPage"
+        <DataTable  :rowsPerPageOptions="rows" :value="customers" lazy paginator :first="first" :rows="perPage"
             v-model:filters="filters" ref="dt" dataKey="id" :totalRecords="totalRecords" :loading="loading"
             @page="onPage($event)" @sort="onSort($event)" @filter="onFilter($event)" filterDisplay="row"
             :globalFilterFields="['name', 'description']" v-model:selection="selectedProducts" :selectAll="selectAll"
@@ -49,6 +50,7 @@
                         @click="confirmDeleteProduct(slotProps.data)" />
                 </template>
             </Column>
+            <ConfirmDialog></ConfirmDialog>
         </DataTable>
     </div>
 </template>
@@ -56,7 +58,6 @@
 <script>
 import { ProductService } from './ProductService';
 
-import { ref, onMounted } from 'vue';
 import { FilterMatchMode } from 'primevue/api';
 import { useToast } from 'primevue/usetoast';
 import DataTable from 'primevue/datatable';
@@ -67,7 +68,6 @@ import FileUpload from 'primevue/fileupload';
 import Toolbar from 'primevue/toolbar';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
-import ConfirmDialog from 'primevue/confirmdialog';
 import Dialog from 'primevue/dialog';
 import InputNumber from 'primevue/inputnumber';
 import RadioButton from 'primevue/radiobutton';
@@ -76,13 +76,22 @@ import Textarea from 'primevue/textarea';
 import InputText from 'primevue/inputtext';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
+import { useConfirm } from "primevue/useconfirm";
+import ConfirmDialog from 'primevue/confirmdialog';
+import { ref } from 'vue';
+import Toast from 'primevue/toast';
+
+
 import 'primeicons/primeicons.css';
 
 export default {
     components: {
-        DataTable, Column, ColumnGroup, Row, FileUpload, Toolbar, Button, IconField, InputIcon, InputText
+        DataTable, Column,Toast, ColumnGroup, ConfirmDialog, Row, FileUpload, Toolbar, Button, IconField, InputIcon, InputText
     },
 
+    setup() {
+        return { confirm$: useConfirm() ,toast$ : useToast() }
+    },
     // props: {
     //     // Define your props here
     //     prop1: {
@@ -125,19 +134,24 @@ export default {
             sortField: null,
             sortOrder: null,
             filters: this.filters
-        }; 
+        };
 
         this.loadLazyData();
     },
-    computed : {
-            rows () {
-                return this.$page.props.datatable.rows;
-            },
-            perPage () {
-                return this.$page.props.datatable.perPage;
-            }
+    computed: {
+        rows() {
+            return this.$page.props.datatable.rows;
+        },
+        perPage() {
+            return this.$page.props.datatable.perPage;
+        }
     },
     methods: {
+        editProduct(data) {
+            this.$inertia.visit(route('admin.product.edit', {
+                product: data.id
+            }));
+        },
         loadLazyData() {
             this.loading = true;
             this.lazyParams = { ...this.lazyParams, first: event?.first || this.first };
@@ -183,9 +197,35 @@ export default {
         onRowUnselect() {
             this.selectAll = false;
         },
-        openNew(){
+        openNew() {
             this.$inertia.visit(route('admin.product.create'));
-        }
+        },
+        confirmDeleteProduct(data) {
+            this.confirm$.require({
+                message: 'Do you want to delete this record?',
+                header: 'Confirmation',
+                icon: 'pi pi-info-circle',
+                rejectLabel: 'Cancel',
+                acceptLabel: 'Delete',
+                rejectClass: 'p-button-secondary p-button-outlined',
+                acceptClass: 'p-button-danger',
+                accept: () => {
+                    this.$inertia.delete(route('admin.product.destroy',{
+                        product : data.id
+                    }),{
+                        onSuccess : () => {
+
+                            this.toast$.add({ severity: 'success', summary: this.$page.props.flash.message, life: 3000 });
+
+                            this.loadLazyData();
+                        }
+                    });
+                },
+                reject: () => {
+                    
+                }
+            });
+        },
     }
 } 
 </script>
