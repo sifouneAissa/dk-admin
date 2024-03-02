@@ -47,6 +47,7 @@ class BaseRepository implements EloquentRepositoryInterface
 	}
 
 	public function perPage(){
+		
 		if(request()->has('per_page') && request()->per_page){
 			return request()->per_page;
 		}

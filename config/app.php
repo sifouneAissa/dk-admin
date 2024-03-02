@@ -7,7 +7,7 @@ use Illuminate\Support\ServiceProvider;
 return [
     'admin-prefix' => 'admin-dash',
     'client-prefix' => '',
-    'perpage' => 20,
+    'perpage' => 10,
     /*
     |--------------------------------------------------------------------------
     | Application Name

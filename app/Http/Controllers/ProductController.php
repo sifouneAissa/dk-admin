@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\EventFilter;
 use App\Http\Resources\Product\ProductCollectionResource;
 use App\Models\Product;
 use App\Repository\ProductRepositoryInterface;
@@ -17,16 +18,38 @@ class ProductController extends Controller
         $this->repository = $repository;
     }
 
-    public function index(){
-        
-        return Inertia::render('Product',buildBreadCrumb([
-            'title' => 'Product',
-            'link' => route('admin.product')
-        ]));
+    public function index()
+    {
+        return Inertia::render('Product', array_merge(
+            buildBreadCrumb([
+                'title' => 'Product',
+                'link' => route('admin.product')
+            ]),
+            $this->getConfig()
+        ));
     }
 
-    public function lindex(Request $request){
-        return $this->repository->list($request->all(),true,true);
+    public function lindex(Request $request)
+    {
+        return $this->repository->list($request->all(), true, true);
     }
 
+
+    public function getConfig()
+    {
+        return [
+            'columns' => [
+                [
+                    'field' => 'name',
+                    'header' => 'Name',
+                ],
+                [
+                    'field' => 'description',
+                    'header' => 'Description',
+                ]
+                ],
+                'route' => route('admin.product.lindex')
+
+        ];
+    }
 }

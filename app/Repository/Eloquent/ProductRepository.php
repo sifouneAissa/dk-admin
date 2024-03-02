@@ -2,6 +2,7 @@
 
 namespace App\Repository\Eloquent;
 
+use App\Filters\EventFilter;
 use App\Http\Resources\Product\ProductCollectionResource;
 use App\Models\Product;
 use App\Repository\ProductRepositoryInterface;
@@ -18,8 +19,16 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         
         $models = $this->model;
 
-        if($usePaginate)
-        $models  = $this->model->paginate($this->perPage());
+        $result = (new EventFilter($data))->applyFilter($models);
+        
+        if(!$result) {
+            if($usePaginate)
+            $models = $models->paginate($this->perPage());
+            else $models = $models->get();
+        }
+        else {
+            $models = $result;
+        }
     
         if($useResponce)
             $models = ProductCollectionResource::make($models);

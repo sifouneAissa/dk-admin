@@ -42,6 +42,7 @@ if (!function_exists('getPrefix')) {
 }
 
 
+
 if (!function_exists('buildBreadCrumb')) {
 
     function buildBreadCrumb($activeHeader = null, $header = null, $useDashboard = true)
@@ -63,6 +64,28 @@ if (!function_exists('buildBreadCrumb')) {
                         'link' => $activeHeader['link']
                     ] : null
                 ]
+        ];
+    }
+}
+
+
+if (!function_exists('buildConfig')) {
+
+    function buildConfig()
+    {
+       return [
+            'columns' => [
+                [
+                    'field' => 'name',
+                    'header' => 'Name'
+                ],
+                [
+                    'field' => 'description',
+                    'header' => 'Description'
+                ],
+                
+            ],
+
         ];
     }
 }

@@ -1,6 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import CustomDatatable from '@/Components/Common/CustomDatatable.vue';
+import ProductDatatable from '@/Pages/Products/ProductDatatable.vue';
 import { Head } from '@inertiajs/vue3';
 </script>
 
@@ -10,7 +10,7 @@ import { Head } from '@inertiajs/vue3';
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <CustomDatatable :header="'Manage Proudcts'"   />
+                    <ProductDatatable  />
                 </div>
             </div>
         </div>
