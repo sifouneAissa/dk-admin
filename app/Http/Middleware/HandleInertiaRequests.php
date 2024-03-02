@@ -38,6 +38,13 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             //
+            'datatable' => [
+                'rows' => config('datatable.rows'),
+                'perPage' => config('datatable.perPage')
+            ],
+            'flash' => [
+                'message' => fn () => $request->session()->get('message'),
+            ],
         ]);
     }
 }

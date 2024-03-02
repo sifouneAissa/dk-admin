@@ -47,12 +47,12 @@ class BaseRepository implements EloquentRepositoryInterface
 	}
 
 	public function perPage(){
-		
+
 		if(request()->has('per_page') && request()->per_page){
 			return request()->per_page;
 		}
 
-		return config('app.perpage');
+		return config('datatable.perPage');
 	}
 
 	public function toSqlWithBindings($eloquent)

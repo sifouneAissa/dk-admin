@@ -21,7 +21,7 @@ if (!function_exists('requestPrefix')) {
         else
             $prefix = $request->route()->getPrefix();
 
-        return $prefix === '/' . config('app.admin-prefix') || $prefix === config('app.admin-prefix');
+        return $prefix === '/' . config('app.admin-prefix') || $prefix === config('app.admin-prefix') || str_contains($prefix,config('app.admin-prefix'));
     }
 }
 

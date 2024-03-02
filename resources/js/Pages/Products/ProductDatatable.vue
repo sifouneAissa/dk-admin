@@ -15,7 +15,7 @@
         </Toolbar>
 
 
-        <DataTable :rowsPerPageOptions="[10, 20, 30, 40, 50]" :value="customers" lazy paginator :first="first" :rows="10"
+        <DataTable :rowsPerPageOptions="rows" :value="customers" lazy paginator :first="first" :rows="perPage"
             v-model:filters="filters" ref="dt" dataKey="id" :totalRecords="totalRecords" :loading="loading"
             @page="onPage($event)" @sort="onSort($event)" @filter="onFilter($event)" filterDisplay="row"
             :globalFilterFields="['name', 'description']" v-model:selection="selectedProducts" :selectAll="selectAll"
@@ -82,6 +82,20 @@ export default {
     components: {
         DataTable, Column, ColumnGroup, Row, FileUpload, Toolbar, Button, IconField, InputIcon, InputText
     },
+
+    // props: {
+    //     // Define your props here
+    //     prop1: {
+    //         type: String,
+    //         required: true
+    //     },
+    //     prop2: {
+    //         type: Number,
+    //         default: 42
+    //     },
+    //     // Add more props as needed
+    // },
+    // Other component options (methods, computed, etc.) can go here
     data() {
         return {
             loading: false,
@@ -111,9 +125,17 @@ export default {
             sortField: null,
             sortOrder: null,
             filters: this.filters
-        };
+        }; 
 
         this.loadLazyData();
+    },
+    computed : {
+            rows () {
+                return this.$page.props.datatable.rows;
+            },
+            perPage () {
+                return this.$page.props.datatable.perPage;
+            }
     },
     methods: {
         loadLazyData() {
@@ -160,7 +182,10 @@ export default {
         },
         onRowUnselect() {
             this.selectAll = false;
+        },
+        openNew(){
+            this.$inertia.visit(route('admin.product.create'));
         }
     }
-}
+} 
 </script>

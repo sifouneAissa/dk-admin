@@ -19,6 +19,8 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
+        "@vuelidate/core": "^2.0.3",
+        "@vuelidate/validators": "^2.0.4",
         "admin-lte": "3.2",
         "primeicons": "^6.0.1",
         "primevue": "^3.49.1"

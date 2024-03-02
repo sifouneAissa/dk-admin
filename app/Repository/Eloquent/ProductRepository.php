@@ -4,6 +4,7 @@ namespace App\Repository\Eloquent;
 
 use App\Filters\EventFilter;
 use App\Http\Resources\Product\ProductCollectionResource;
+use App\Http\Resources\Product\ProductResource;
 use App\Models\Product;
 use App\Repository\ProductRepositoryInterface;
 
@@ -17,7 +18,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
     public function list($data,$useResource = false,$useResponce = false,$usePaginate = true){
         
-        $models = $this->model;
+        $models = $this->model->orderBy('created_at','desc');
 
         $result = (new EventFilter($data))->applyFilter($models);
         
@@ -38,4 +39,15 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         return $models;
     }
    
+
+    public function store($data,$useResource =false){
+        
+        $data = $this->model->create($data);
+
+        if($useResource){
+            return ProductResource::make($data);
+        }
+
+        return $data;
+    }
 }
