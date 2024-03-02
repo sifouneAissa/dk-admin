@@ -1,29 +1,30 @@
 <?php
 
 return [
-        [
-            'text' => 'Dashboard',
-            'icon' => 'fa-tachometer-alt',
-            'route' => 'admin.dashboard',
-            'children' => [
-
-            ],
+    [
+        'text' => 'Dashboard',
+        'icon' => 'fa-tachometer-alt',
+        'route' => 'admin.dashboard',
+        'children' => [],
+    ],
+    [
+        'text' => 'Products',
+        'icon' => 'fa-shopping-bag',
+        'route' => 'admin.product.index',
+        'children' => [
+            [
+                'text' => 'Add Product',
+                'icon' => 'fas fa-plus',
+                'route' => 'admin.product.create',
+                'children' => [],
+            ]
         ],
-        [
-            'text' => 'Products',
-            'icon' => 'fa-tags',
-            'route' => 'admin.product',
-            'children' => [
-
-            ],
-        ],
-        [
-            'text' => 'Categories',
-            'icon' => 'fa-tags',
-            'route' => 'admin.category',
-            'children' => [
-
-            ],
-        ],
+    ],
+    [
+        'text' => 'Categories',
+        'icon' => 'fa-tags',
+        'route' => 'admin.category',
+        'children' => [],
+    ],
 
 ];
