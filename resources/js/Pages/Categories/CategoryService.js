@@ -27,5 +27,9 @@ export const CategoryService = {
             : '';
 
         return fetch('http://localhost:8000/admin-dash/category/list?' + queryParams).then((res) => res.json());
+    },
+
+    getSelect(){
+        return Promise.resolve(fetch('http://localhost:8000/admin-dash/category/list?forSelect=1').then((res) => res.json()));
     }
 };

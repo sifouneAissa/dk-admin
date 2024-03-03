@@ -137,6 +137,9 @@ export default {
         };
 
         this.loadLazyData();
+
+
+        
     },
     computed: {
         rows() {

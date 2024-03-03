@@ -3,9 +3,11 @@
         <Toast />
         <Card>
             <template #title>{{ title }}</template>
+
             <template #content>
                 <p class="m-0">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error repudiandae
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed consequuntur error
+                    repudiandae
                     numquam deserunt quisquam repellat libero asperiores earum nam nobis, culpa ratione quam perferendis
                     esse, cupiditate neque
                     quas!
@@ -14,7 +16,9 @@
         </Card>
         <Divider />
         <Card>
+
             <template #title>General</template>
+
             <template #content>
                 <form @submit.prevent="submit">
                     <Divider />
@@ -28,14 +32,19 @@
                             :invalid="hasErrors && v$.name.$invalid" />
                         <label for="ac">Description</label>
                     </FloatLabel>
-
-                    <Button label="Submit" type="submit" class="float-right" :disabled="form.processing"/>
+                    <Divider />
+                    <FloatLabel class="w-full card flex justify-content-center col-4">
+                        <TreeSelect v-model="parent_id" :options="categories" placeholder="Select Category"
+                            class="w-full" />
+                        <label>Select Category</label>
+                    </FloatLabel>
+                    <Button label="Submit" type="submit" class="float-right" :disabled="form.processing" />
                 </form>
             </template>
         </Card>
     </Layout>
 </template>
-  
+
 <script>
 
 import Layout from '@/Pages/Layout.vue';
@@ -51,13 +60,13 @@ import { useForm } from '@inertiajs/vue3';
 import { useToast } from 'primevue/usetoast';
 import Toast from 'primevue/toast';
 import 'primevue/resources/themes/aura-light-green/theme.css'
-
-
+import { CategoryService } from './../CategoryService';
+import TreeSelect from 'primevue/treeselect';
 
 
 export default {
     setup() {
-        return { v$: useVuelidate() ,toast$ : useToast() }
+        return { v$: useVuelidate(), toast$: useToast() }
     },
     components: {
         Layout,
@@ -67,12 +76,13 @@ export default {
         FloatLabel,
         InputText,
         Textarea,
-        Button
+        Button,
+        TreeSelect
     },
-    mounted (){
+    mounted() {
         console.log(this.record)
     },
-    props: ['breadcrumb','record'],
+    props: ['breadcrumb', 'record'],
     computed: {
         title() {
             return this.breadcrumb.active_header.title;
@@ -82,14 +92,30 @@ export default {
         }
     },
     methods: {
+        getKeyByValue(object, targetValue) {
+            for (const key in object) {
+                if (object.hasOwnProperty(key) && object[key] === targetValue) {
+                    return key;
+                }
+            }
+            return null; // Return null if the value is not found
+        },
         async submit() {
+
             const result = await this.v$.$validate()
             if (result) {
+
+                let value = null;
+                if (this.parent_id) {
+                    value = this.getKeyByValue(this.parent_id, true);
+                }
+                
                 this.form.transform(data => ({
-                    name : this.name,
-                    description : this.description
-                })).patch(route('admin.category.update',{
-                    category : this.record.id
+                    name: this.name,
+                    description: this.description,
+                    parent_id : value
+                })).patch(route('admin.category.update', {
+                    category: this.record.id
                 }), {
                     onSuccess: (data) => {
                         this.toast$.add({ severity: 'success', summary: this.$page.props.flash.message, life: 3000 });
@@ -103,8 +129,22 @@ export default {
         }
     },
 
+    mounted() {
+        CategoryService.getSelect().then((data) => {
+            this.categories = data;
+        });
+
+        if (this.record.parent_id) {
+            this.parent_id = {
+                [this.record.parent_id]: true
+            };
+        }
+
+    },
     data() {
         return {
+            parent_id: '',
+            categories: null,
             name: this.record.name,
             description: this.record.description,
             form: useForm({
@@ -118,4 +158,3 @@ export default {
     },
 };
 </script>
-  
