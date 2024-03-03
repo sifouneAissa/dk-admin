@@ -39,9 +39,29 @@ return [
     [
         'text' => 'Categories',
         'icon' => 'fa-tags',
-        'route' => 'admin.category',
-        'children' => [],
+        'route' => 'admin.category.index',
         'visible' => true,
+        'children' => [
+            [
+                'text' => 'Categories',
+                'icon' => 'fa-tags',
+                'route' => 'admin.category.index',
+                'visible' => true,
+                'children' => []
+            ],
+            // edit route
+            [
+                'route' => 'admin.category.edit',
+                'visible' => false,
+            ],
+            [
+                'text' => 'Add Category',
+                'icon' => 'fas fa-plus',
+                'route' => 'admin.category.create',
+                'visible' => true,
+                'children' => [
+                ],
+            ]
+        ],
     ],
-
 ];

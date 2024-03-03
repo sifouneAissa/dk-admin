@@ -25,6 +25,17 @@ use Inertia\Inertia;
             \Illuminate\Support\Facades\Route::post('/',[\App\Http\Controllers\ProductController::class,'store'])->name('store');
         });
 
+        \Illuminate\Support\Facades\Route::prefix('category')->name('category.')->group(function (){
+            \Illuminate\Support\Facades\Route::get('/list',[\App\Http\Controllers\CategoryController::class,'lindex'])->name('lindex');
+            \Illuminate\Support\Facades\Route::get('/',[\App\Http\Controllers\CategoryController::class,'index'])->name('index');
+            \Illuminate\Support\Facades\Route::get('/create',[\App\Http\Controllers\CategoryController::class,'create'])->name('create');
+            \Illuminate\Support\Facades\Route::get('/{category}/edit',[\App\Http\Controllers\CategoryController::class,'edit'])->name('edit');
+            \Illuminate\Support\Facades\Route::patch('/{category}',[\App\Http\Controllers\CategoryController::class,'update'])->name('update');
+            \Illuminate\Support\Facades\Route::delete('/{category}',[\App\Http\Controllers\CategoryController::class,'destroy'])->name('destroy');
+
+            \Illuminate\Support\Facades\Route::post('/',[\App\Http\Controllers\CategoryController::class,'store'])->name('store');
+        });
+
     });
 
     require __DIR__. '/admin-auth.php';
