@@ -41,6 +41,17 @@
                         class="p-column-filter" placeholder="Search" />
                 </template> -->
             </Column>
+            <Column field="is_active" header="Active" filterField="is_active" filterMatchMode="contains" sortable>
+                <template #body="{ data }">
+                    <div class="flex align-items-center gap-2">
+                        <div>{{ data.is_active ? 'Yes' : 'No'  }}</div>
+                    </div>
+                </template>
+                <!-- <template #filter="{ filterModel, filterCallback }">
+                    <InputText type="text" v-model="filterModel.value" @keydown.enter="filterCallback()"
+                        class="p-column-filter" placeholder="Search" />
+                </template> -->
+            </Column>
 
 
             <Column :exportable="false" style="min-width:8rem">
